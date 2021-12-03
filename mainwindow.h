@@ -7,12 +7,19 @@
 #include <QCameraViewfinder>
 #include <QDebug>
 #include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
 #include <QMainWindow>
+#include <QPushButton>
+#include <QSpacerItem>
 #include <QStackedWidget>
 #include <QTabWidget>
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QVideoWidget>
+
+#include "QZXing"
+#include "QZXing.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,6 +33,9 @@ class MainWindow : public QMainWindow {
  public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
+
+  void TestCam();
+  void TestQrCode();
 
  private:
   Ui::MainWindow *ui;

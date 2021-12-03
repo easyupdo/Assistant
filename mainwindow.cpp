@@ -18,6 +18,14 @@ MainWindow::MainWindow(QWidget *parent)
 
   h_layout->setStretchFactor(left_widget, 1);
   h_layout->setStretchFactor(tab_widget, 4);
+  // main layout
+  QVBoxLayout *v_layout = new QVBoxLayout(this);
+
+  // top layout
+  QHBoxLayout *top_layout = new QHBoxLayout(this);
+  QPushButton *conn_button = new QPushButton(this);
+  // QLabel *ip_label = new QLabel(this);
+  QLineEdit *ip_lineEdit = new QLineEdit(this);
 
   // set centralWiget layout
   QHBoxLayout *central_layout = new QHBoxLayout(this);
@@ -30,6 +38,14 @@ MainWindow::MainWindow(QWidget *parent)
   this->tab_widget->addTab(tab1, "tab1");
   this->tab_widget->addTab(tab2, "tab2");
 
+  // TODO Test Qr Code
+  TestQrCode();
+
+  // TODO Test Cam
+  TestCam();
+}
+
+void MainWindow::TestCam() {
   // test cam
   QList<QCameraInfo> info = QCameraInfo::availableCameras();
   qDebug() << "cam infos" << info.size();
@@ -60,6 +76,27 @@ MainWindow::MainWindow(QWidget *parent)
   //  cam->setViewfinder(video_widget);
   //  video_widget->show();
   //  cam->start();
+}
+
+void MainWindow::TestQrCode() {
+  //  QImage imageToDecode(":/image/qr.png");
+  QImage imageToDecode;
+  bool ret = imageToDecode.load(":/image/qr.png");
+  QZXing decoder;
+  // mandatory settings
+  decoder.setDecoder(QZXing::DecoderFormat_QR_CODE |
+                     QZXing::DecoderFormat_EAN_13);
+
+  // optional settings
+  // decoder.setSourceFilterType(QZXing::SourceFilter_ImageNormal |
+  // QZXing::SourceFilter_ImageInverted);
+  decoder.setSourceFilterType(QZXing::SourceFilter_ImageNormal);
+  decoder.setTryHarderBehaviour(QZXing::TryHarderBehaviour_ThoroughScanning |
+                                QZXing::TryHarderBehaviour_Rotate);
+
+  // trigger decode
+  QString result = decoder.decodeImage(imageToDecode);
+  qDebug() << result;
 }
 
 MainWindow::~MainWindow() { delete ui; }
