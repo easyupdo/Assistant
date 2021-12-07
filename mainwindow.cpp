@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 
+#include <map>
+
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -42,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
   TestQrCode();
 
   // TODO Test Cam
-  TestCam();
+  //  TestCam();
 }
 
 void MainWindow::TestCam() {
@@ -78,10 +80,38 @@ void MainWindow::TestCam() {
   //  cam->start();
 }
 
+typedef struct {
+  std::string id;
+  std::string type;
+  std::string code;
+  std::string number;
+  std::string price;  // price excluding tax
+  std::string date;   // invoice data
+  std::string check_code;
+  std::string encrypt_character;
+} InvoiceInfo;
+// using InvoiceInfo = std::map<std::string, std::string>;
+
+InvoiceInfo ParseInvoice(std::string str) {
+  size_t index1 = 0;
+  size_t index2 = 0;
+  std::vector<std::string> invoice_info{};
+  while ((index2 = str.find(",", index1)) != std::string::npos) {
+    std::string sub_str = str.substr(index1, index2 - index1);
+    invoice_info.push_back(sub_str);
+    index1 = index2 + 1;
+  }
+
+  return {
+      invoice_info[0], invoice_info[1], invoice_info[2], invoice_info[3],
+      invoice_info[4], invoice_info[5], invoice_info[6], invoice_info[7],
+  };
+}
+
 void MainWindow::TestQrCode() {
   //  QImage imageToDecode(":/image/qr.png");
   QImage imageToDecode;
-  bool ret = imageToDecode.load(":/image/qr.png");
+  bool ret = imageToDecode.load(":/image/fp.png");
   QZXing decoder;
   // mandatory settings
   decoder.setDecoder(QZXing::DecoderFormat_QR_CODE |
@@ -97,6 +127,8 @@ void MainWindow::TestQrCode() {
   // trigger decode
   QString result = decoder.decodeImage(imageToDecode);
   qDebug() << result;
+  InvoiceInfo invoice_info = ParseInvoice(result.toStdString());
+  qDebug() << "check_code:" << QString::fromStdString(invoice_info.check_code);
 }
 
 MainWindow::~MainWindow() { delete ui; }
