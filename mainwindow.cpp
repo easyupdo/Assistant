@@ -68,6 +68,14 @@ void MainWindow::TestSql() {
     qDebug() << "query select exec successful";
     while (query.next()) {
       int id = query.value(0).toInt();
+      std::string type = query.value(1).toString().toStdString();
+      std::string code = query.value(2).toString().toStdString();
+      int number = query.value(3).toInt();
+      std::string price = query.value(4).toString().toStdString();
+      std::string date = query.value(5).toString().toStdString();
+      std::string check_code = query.value(6).toString().toStdString();
+      std::string encrypt_character = query.value(7).toString().toStdString();
+
       qDebug() << "id:" << id;
     }
   }
@@ -107,10 +115,10 @@ void MainWindow::TestCam() {
 }
 
 typedef struct {
-  std::string id;
+  int32_t id;
   std::string type;
   std::string code;
-  std::string number;
+  int32_t number;
   std::string price;  // price excluding tax
   std::string date;   // invoice data
   std::string check_code;
@@ -129,8 +137,14 @@ InvoiceInfo ParseInvoice(std::string str) {
   }
 
   return {
-      invoice_info[0], invoice_info[1], invoice_info[2], invoice_info[3],
-      invoice_info[4], invoice_info[5], invoice_info[6], invoice_info[7],
+      atoi(invoice_info[0].c_str()),
+      invoice_info[1],
+      invoice_info[2],
+      atoi(invoice_info[3].c_str()),
+      invoice_info[4],
+      invoice_info[5],
+      invoice_info[6],
+      invoice_info[7],
   };
 }
 

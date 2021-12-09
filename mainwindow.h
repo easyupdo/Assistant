@@ -13,7 +13,9 @@
 #include <QPushButton>
 #include <QSpacerItem>
 #include <QStackedWidget>
+#include <QStandardItemModel>
 #include <QTabWidget>
+#include <QTableView>
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QVideoWidget>
