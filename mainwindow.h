@@ -17,6 +17,9 @@
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QVideoWidget>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql>
 
 #include "QZXing"
 #include "QZXing.h"
@@ -36,6 +39,8 @@ class MainWindow : public QMainWindow {
 
   void TestCam();
   void TestQrCode();
+
+  void TestSql();
 
  private:
   Ui::MainWindow *ui;

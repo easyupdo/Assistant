@@ -45,6 +45,32 @@ MainWindow::MainWindow(QWidget *parent)
 
   // TODO Test Cam
   //  TestCam();
+
+  // TODO Test sql
+  TestSql();
+}
+
+void MainWindow::TestSql() {
+  QSqlDatabase info_db = QSqlDatabase::addDatabase("QSQLITE");
+  info_db.setDatabaseName("assistant.db");
+  if (!info_db.open()) {
+    qDebug() << "db open failed!";
+  } else {
+  }
+
+  QString select_sql = "select * from info";
+  QSqlQuery query;
+  query.prepare("select * from info");
+  if (!query.exec()) {
+    qDebug() << "query select exec failed!";
+    qDebug() << query.lastError();
+  } else {
+    qDebug() << "query select exec successful";
+    while (query.next()) {
+      int id = query.value(0).toInt();
+      qDebug() << "id:" << id;
+    }
+  }
 }
 
 void MainWindow::TestCam() {
